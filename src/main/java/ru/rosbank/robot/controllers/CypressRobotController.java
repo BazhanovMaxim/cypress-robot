@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.rosbank.robot.services.CypressRobotService;
 
+import java.awt.event.KeyEvent;
+
 @RestController
 @RequestMapping("/click")
 @RequiredArgsConstructor
@@ -14,8 +16,10 @@ public class CypressRobotController {
     private final CypressRobotService robotService;
 
     @GetMapping
-    public void mouseClick(@RequestParam("x") int x, @RequestParam("y") int y) {
+    public void textInputWithPressEnter(@RequestParam("x") int x, @RequestParam("y") int y, @RequestParam("text") String text) {
         robotService.mouseMove(x, y);
         robotService.mousePress();
+        robotService.sendKeys(text);
+        robotService.keyPress(KeyEvent.VK_ENTER);
     }
 }

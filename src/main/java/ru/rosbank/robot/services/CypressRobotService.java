@@ -6,6 +6,7 @@ import ru.rosbank.robot.models.IRobot;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 @Service
 public class CypressRobotService implements IRobot {
@@ -28,11 +29,38 @@ public class CypressRobotService implements IRobot {
     }
 
     /**
-     * нажимает кнопки.
+     * Нажимает ЛКМ.
      */
     @Override
     public void mousePress() {
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+    }
+
+    /**
+     * Вводит текст в поле.
+     *
+     * @param keys текст
+     */
+    public void sendKeys(String keys) {
+        for (char c : keys.toCharArray()) {
+            int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
+            if (KeyEvent.CHAR_UNDEFINED == keyCode) {
+                throw new RuntimeException(String.format("Key code not found for character '%s'", c));
+            }
+            robot.keyPress(keyCode);
+            robot.delay(100);
+            robot.keyRelease(keyCode);
+            robot.delay(100);
+        }
+    }
+
+    /**
+     * Нажимает клавишу на клавиатуре.
+     *
+     * @param key ключ клавишы.
+     */
+    public void keyPress(int key) {
+        robot.keyPress(KeyEvent.getExtendedKeyCodeForChar(key));
     }
 }

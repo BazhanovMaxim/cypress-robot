@@ -11,7 +11,21 @@ public interface IRobot {
     void mouseMove(int x, int y);
 
     /**
-     * нажимает кнопки.
+     * Нажимает ЛКМ.
      */
     void mousePress();
+
+    /**
+     * Вводит текст в поле.
+     *
+     * @param keys текст
+     */
+    void sendKeys(String keys);
+
+    /**
+     * Нажимает клавишу на клавиатуре.
+     *
+     * @param key ключ клавишы.
+     */
+    void keyPress(int key);
 }
