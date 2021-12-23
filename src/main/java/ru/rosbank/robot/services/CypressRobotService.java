@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.rosbank.robot.models.IRobot;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
@@ -43,16 +45,14 @@ public class CypressRobotService implements IRobot {
      * @param keys текст
      */
     public void sendKeys(String keys) {
-        for (char c : keys.toCharArray()) {
-            int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
-            if (KeyEvent.CHAR_UNDEFINED == keyCode) {
-                throw new RuntimeException(String.format("Key code not found for character '%s'", c));
-            }
-            robot.keyPress(keyCode);
-            robot.delay(100);
-            robot.keyRelease(keyCode);
-            robot.delay(100);
-        }
+        var stringSelection = new StringSelection(keys);
+        var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, stringSelection);
+
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
     }
 
     /**
